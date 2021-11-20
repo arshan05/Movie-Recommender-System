@@ -1,0 +1,30 @@
+{
+  "name": "movie_recommendation_system",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "concurrently": "^6.4.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "python-shell": "^3.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "npm install && npm install --prefix client",
+    "server": "nodemon index.js --ignore client",
+    "client": "yarn --cwd client run start",
+    "start": "node index.js",
+    "dev": "concurrently \" npm run server \" \" npm run client \"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jaswanth-Sriram-Veturi/Movie-Recommendation-System.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jaswanth-Sriram-Veturi/Movie-Recommendation-System/issues"
+  }
+}
