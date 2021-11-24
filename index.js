@@ -21,15 +21,9 @@ app.post('/api/recommendations', async (req, res, next) => {
         let recommended_movie_names = []
         let recommended_movie_posters = []
         let result = []
-        recommended_movie_names = results.toString().split('],')[0]
-        recommended_movie_names = recommended_movie_names.replace(/['"]+/g, '')
-        recommended_movie_names = recommended_movie_names.replace(/[\[\]']+/g, '')
-        recommended_movie_names = recommended_movie_names.split(', ')
 
-        recommended_movie_posters = results.toString().split('],')[1]
-        recommended_movie_posters = recommended_movie_posters.replace(/['"]+/g, '')
-        recommended_movie_posters = recommended_movie_posters.replace(/[\[\]']+/g, '')
-        recommended_movie_posters = recommended_movie_posters.split(', ')
+        recommended_movie_names = eval(eval(results)[0])
+        recommended_movie_posters = eval(eval(results)[1])
 
         for (let i = 0; i < 5; i++) {
             result.push({
