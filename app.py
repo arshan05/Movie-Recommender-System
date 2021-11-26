@@ -33,7 +33,6 @@ similarity = pickle.load(open('similarity.pkl', 'rb'))
 
 
 def main():
-    movie_list = movies['title'].values
     recommended_movie_names, recommended_movie_posters = recommend(sys.argv[1])
     print(recommended_movie_names)
     print(recommended_movie_posters)
