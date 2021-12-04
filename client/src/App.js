@@ -66,11 +66,13 @@ const App = () => {
 
 	return (
 		<div className="App">
-			<div className="switch">
-				<label className="theme-switch" htmlFor="theme">
-					<input type="checkbox" id="theme" onClick={toggleTheme} />
-					<div className="slider round"></div>
-				</label>
+			<div className="switch-wrapper">
+				<div className="switch">
+					<label className="theme-switch" htmlFor="theme">
+						<input type="checkbox" id="theme" onClick={toggleTheme} />
+						<div className="slider round"></div>
+					</label>
+				</div>
 			</div>
 			<div className="search">
 				<h1 className="title">Movie Recommender System</h1>
