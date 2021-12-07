@@ -20,18 +20,24 @@ app.post('/api/recommendations', async (req, res, next) => {
         // console.log(results.toString())
         let recommended_movie_names = []
         let recommended_movie_posters = []
+        let recommended_movie_ids = []
+        // let current_movie_id = 0
         let result = []
 
         recommended_movie_names = eval(eval(results)[0])
         recommended_movie_posters = eval(eval(results)[1])
+        recommended_movie_ids = eval(eval(results)[2])
+        // current_movie_id = eval(eval(results)[3])
 
         for (let i = 0; i < 5; i++) {
             result.push({
                 title: recommended_movie_names[i],
-                poster: recommended_movie_posters[i]
+                poster: recommended_movie_posters[i],
+                id: recommended_movie_ids[i]
             })
         }
         res.json(result)
+        // res.json({ result: result, currentMovieId: current_movie_id })
     })
 })
 

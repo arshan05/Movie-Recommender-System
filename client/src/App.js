@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import React from "react";
 import "./App.css";
-import Autocomplete from "react-autocomplete";
 import movies from "./movie_titles";
+import Home from "./components/Home";
+import { Switch, Route, Link } from 'react-router-dom'
+import Movie from "./components/Movie";
 
 const App = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [recommendations, setRecommendations] = useState([]);
 	const [movieName, setMovieName] = useState("");
 	const [error, setError] = useState(null)
+	const [movieId, setMovieId] = useState(null)
 
 	useEffect(() => {
 		const theme = localStorage.getItem('mv-theme')
@@ -25,7 +28,7 @@ const App = () => {
 		// eslint-disable-next-line
 	}, [])
 
-	const getRecommendedMovies = (e) => {
+	const getRecommendedMovies = (e, movieName) => {
 		e.preventDefault();
 		if (movieName === "") return;
 		setRecommendations([])
@@ -43,6 +46,8 @@ const App = () => {
 			.then((data) => {
 				console.log(data)
 				setRecommendations(data);
+				// setRecommendations(data.result);
+				// setMovieId(data.movieId)
 				setIsLoading(false);
 				setError(null)
 			})
@@ -64,8 +69,13 @@ const App = () => {
 		}
 	}
 
+	const currentMovie = recommendations.find(movie => movie.id === movieId)
+
 	return (
 		<div className="App">
+			<Link to="/" className="home-icon">
+				Home
+			</Link>
 			<div className="switch-wrapper">
 				<div className="switch">
 					<label className="theme-switch" htmlFor="theme">
@@ -74,68 +84,26 @@ const App = () => {
 					</label>
 				</div>
 			</div>
-			<div className="search">
-				<h1 className="title">Movie Recommender System</h1>
-				<Autocomplete
-					value={movieName}
-					items={movies}
-					getItemValue={(item) => item}
-					renderItem={(item, isHighlighted) => (
-						<div
-							className={`item ${isHighlighted ? "selected-item" : ""}`}
-						>
-							{item}
-						</div>
-					)}
-					onChange={(event) => setMovieName(event.target.value)}
-					onSelect={(value) => setMovieName(value)}
-					shouldItemRender={(item, value) => item.toLowerCase().indexOf(value.toLowerCase()) > -1}
-					inputProps={{
-						style: {
-							width: "450px",
-							height: "48px",
-							padding: "0 10px",
-							border: "2px solid var(--input-border-color)",
-							borderRadius: "6px",
-							fontSize: "14px",
-							background: "transparent",
-							color: "var(--text-color)",
-							outline: "none",
-						},
-						placeholder: "Enter Movie Name",
-					}}
-					renderMenu={children => (
-						<div className="menu" style={{
-							width: '473px',
-							maxHeight: "300px",
-							position: 'absolute',
-							color: 'var(--text-color)',
-							backgroundColor: 'var(--menu-bg)',
-							overflow: 'auto',
-							top: '145px',
-							left: '0',
-						}}>
-							{children.slice(0, 100)}
-						</div>
-					)}
-				/>
-				<button className="button" onClick={getRecommendedMovies}>
-					Recommend
-				</button>
-			</div>
-
-			{isLoading && <h1 className="loader">Loading ...</h1>}
-			{error && <h1 style={{ color: 'white' }}>{error}</h1>}
-
-			<div className="recommendations">
-				{recommendations.map((movie, index) => (
-					<div className="recommendation" key={index}>
-						<img src={movie.poster} alt={movie.title} />
-						<h3>{movie.title}</h3>
-					</div>
-				))}
-			</div>
-
+			<Switch>
+				<Route exact path="/movie/:movieId" render={() =>
+					<Movie
+						movieId={movieId}
+						getRecommendedMovies={getRecommendedMovies}
+						recommendations={recommendations}
+						currentMovie={currentMovie}
+					/>} />
+				<Route exact path='/' render={() =>
+					<Home
+						setMovieId={setMovieId}
+						movieName={movieName}
+						movies={movies}
+						getRecommendedMovies={getRecommendedMovies}
+						setMovieName={setMovieName}
+						isLoading={isLoading}
+						recommendations={recommendations}
+						error={error}
+					/>} />
+			</Switch>
 		</div>
 	);
 }
